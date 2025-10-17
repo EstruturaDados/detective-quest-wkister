@@ -16,26 +16,26 @@ OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES:./%=%))
 TARGETS = $(patsubst $(SRCDIR)/%.c,$(BINDIR)/%,$(SOURCES:./%=%))
 
 # Adicione o caminho para menu.c
-MENU_SRC = menu.c
-MENU_OBJ = $(OBJDIR)/menu.o
+# MENU_SRC = menu.c
+# MENU_OBJ = $(OBJDIR)/menu.o
 
 # Adicione o caminho para geral.c
 GERAL_SRC = geral.c
 GERAL_OBJ = $(OBJDIR)/geral.o
 
-# Adicione o caminho para fila.c
-FILA_SRC = fila.c
-FILA_OBJ = $(OBJDIR)/fila.o
+# Adicione o caminho para arvore.c
+ARVORE_SRC = arvore.c
+ARVORE_OBJ = $(OBJDIR)/arvore.o
 
 # Adicione o caminho para pilha.c
-PILHA_SRC = pilha.c
-PILHA_OBJ = $(OBJDIR)/pilha.o
+# PILHA_SRC = pilha.c
+# PILHA_OBJ = $(OBJDIR)/pilha.o
 
 # Permite compilar um arquivo específico: make file=exemplo.c
 ifeq ($(file),)
 all: dirs $(TARGETS)
 else
-# Permite compilar arquivo em subpasta, ex: make file=Tema-2_Listas-e-Ordenacao/MOD1/mod1.c
+# Permite compilar arquivo em subpasta, ex: make file=algoritmos_avancados.c
 FILE_PATH = $(file)
 FILE_NAME = $(notdir $(FILE_PATH))
 FILE_BASE = $(basename $(FILE_NAME))
@@ -53,29 +53,30 @@ ifeq ($(HAS_MAIN),0)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
 else
 	@echo "Compilando e linkando $(FILE_PATH) (possui main)"
-	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(FILA_OBJ) $(PILHA_OBJ)
+	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(PILHA_OBJ)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
-	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(FILA_OBJ) $(PILHA_OBJ) -o $(FILE_BIN)
+# 	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(PILHA_OBJ) -o $(FILE_BIN)
+	$(CC) $(LDFLAGS) $(FILE_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) -o $(FILE_BIN)
 endif
 endif
 
 # Compila funcoes.c em obj/funcoes.o
 
-$(MENU_OBJ): $(MENU_SRC)
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+# $(MENU_OBJ): $(MENU_SRC)
+# 	@mkdir -p $(dir $@)
+# 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(GERAL_OBJ): $(GERAL_SRC)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(FILA_OBJ): $(FILA_SRC)
+$(ARVORE_OBJ): $(ARVORE_SRC)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(PILHA_OBJ): $(PILHA_SRC)
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+# $(PILHA_OBJ): $(PILHA_SRC)
+# 	@mkdir -p $(dir $@)
+# 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Cria diretórios necessários
 dirs:

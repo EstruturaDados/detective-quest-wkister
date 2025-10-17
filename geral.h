@@ -5,7 +5,6 @@
 
 // --- Constantes ---
 #define TAM_STRING 50 // Tamanho máximo para strings
-#define MAX_PECAS 5 // Tamanho máximo de peças no jogo
 
 // --- Protótipos das funções gerais ---
 // Função para limpar o buffer de entrada

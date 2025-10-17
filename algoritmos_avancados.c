@@ -1,11 +1,27 @@
-#include <stdio.h>
+/**
+ * @file algoritmos_avancados.c
+ * @brief Desafio Detective Quest
+ * @note Tema 4 - Árvores e Tabela Hash
+ * @author Wellington Kister do Nascimento
+ */
 
-// Desafio Detective Quest
-// Tema 4 - Árvores e Tabela Hash
-// Este código inicial serve como base para o desenvolvimento das estruturas de navegação, pistas e suspeitos.
-// Use as instruções de cada região para desenvolver o sistema completo com árvore binária, árvore de busca e tabela hash.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "geral.h" // Protótipos das funções e definições gerais
+#include "arvore.h" // Protótipos das funções e definições de árvores
 
 int main() {
+
+    // Definição e inicialização da árvore de salas
+    // Raiz da árvore
+    Sala* raiz = inicializarArvoreSalas();
+
+    explorarSala(raiz);
+
+
+    // Liberar a memória alocada para a árvore de salas
+    liberarMemoria(raiz);
 
     // 🌱 Nível Novato: Mapa da Mansão com Árvore Binária
     //
