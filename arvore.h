@@ -27,7 +27,7 @@ typedef struct Sala {
 // Protóripos das funções
 Sala* criarSala(char* nome, char* pista); // Cria uma nova sala na árvore
 Sala* inicializarArvoreSalas(); // Inicializa a árvore de salas do tabuleiro
-void explorarSala(); // Permite a navegação do jogador pela árvore
+void explorarSala(struct Sala* raiz, struct No* arvorePistas); // Permite a navegação do jogador pela árvore
 void liberarMemoria(struct Sala* raiz); // Libera a memória alocada para a árvore
 int* fisherYatesIndices(int size); // Gera uma permutação aleatória de índices
 int* fisherYatesShuffle(const int original[], int size); // Embaralha um array usando o algoritmo Fisher-Yates

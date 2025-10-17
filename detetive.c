@@ -10,29 +10,20 @@
 #include <string.h>
 #include "geral.h" // Protótipos das funções e definições gerais
 #include "arvore.h" // Protótipos das funções e definições de árvores
+#include "bst.h" // Protótipos das funções e definições de árvores binárias de busca
 
 int main() {
-
-    // Definição e inicialização da árvore de salas
-    // Raiz da árvore
+    // Definição e inicialização da raiz da árvore de salas
     Sala* raiz = inicializarArvoreSalas();
 
-    explorarSala(raiz);
+    // Definição da variável para a árvore de pistas (BST)
+    No* arvorePistas = NULL;
 
+    // Exploração das salas pelo jogador
+    explorarSala(raiz, arvorePistas);
 
     // Liberar a memória alocada para a árvore de salas
     liberarMemoria(raiz);
-
-    // 🌱 Nível Novato: Mapa da Mansão com Árvore Binária
-    //
-    // - Crie uma struct Sala com nome, e dois ponteiros: esquerda e direita.
-    // - Use funções como criarSala(), conectarSalas() e explorarSalas().
-    // - A árvore pode ser fixa: Hall de Entrada, Biblioteca, Cozinha, Sótão etc.
-    // - O jogador deve poder explorar indo à esquerda (e) ou à direita (d).
-    // - Finalize a exploração com uma opção de saída (s).
-    // - Exiba o nome da sala a cada movimento.
-    // - Use recursão ou laços para caminhar pela árvore.
-    // - Nenhuma inserção dinâmica é necessária neste nível.
 
     // 🔍 Nível Aventureiro: Armazenamento de Pistas com Árvore de Busca
     //

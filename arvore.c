@@ -3,6 +3,7 @@
 #include <string.h>
 #include "geral.h"
 #include "arvore.h"
+#include "bst.h"
 
 char tipoPistas[TAM_PISTAS][TAM_STRING] = {
     "Pegadas de Lama",
@@ -51,10 +52,13 @@ Sala* inicializarArvoreSalas() {
  * @brief Função para liberar a memória alocada para a árvore de salas
  * @param raiz Ponteiro para a raiz da árvore de salas
  */
-void explorarSala(struct Sala* raiz) {
+void explorarSala(struct Sala* raiz, struct No* arvorePistas) {
   // Navegação pela árvore de salas
   char opcao;
   do{
+    // Adicionar a pista da sala atual na árvore de pistas
+    inserir(arvorePistas, raiz->pista);
+
     printf("\n---------------------------\n");
     printf("Você está na sala: %s. Pista: %s\n", raiz->nome, raiz->pista);
     printf("---------------------------\n");
