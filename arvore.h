@@ -10,6 +10,8 @@
 #ifndef ARVORE_H
 #define ARVORE_H
 
+#include "bst.h" // Inclusão do arquivo de árvore binária de busca
+
 // --- Constantes ---
 #define TAM_PISTAS 5 // Número de tipos de pistas disponíveis
 

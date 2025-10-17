@@ -17,7 +17,7 @@ int main() {
     Sala* raiz = inicializarArvoreSalas();
 
     // Definição da variável para a árvore de pistas (BST)
-    No* arvorePistas = NULL;
+    struct No* arvorePistas = NULL;
 
     // Exploração das salas pelo jogador
     explorarSala(raiz, arvorePistas);

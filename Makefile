@@ -27,8 +27,8 @@ GERAL_OBJ = $(OBJDIR)/geral.o
 ARVORE_SRC = arvore.c
 ARVORE_OBJ = $(OBJDIR)/arvore.o
 
-Adicione o caminho para bst.c
-BST_SRC = pilha.c
+# Adicione o caminho para bst.c
+BST_SRC = bst.c
 BST_OBJ = $(OBJDIR)/bst.o
 
 # Permite compilar um arquivo específico: make file=exemplo.c

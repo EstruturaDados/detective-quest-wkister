@@ -57,7 +57,7 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas) {
   char opcao;
   do{
     // Adicionar a pista da sala atual na árvore de pistas
-    inserir(arvorePistas, raiz->pista);
+    inserir(&arvorePistas, raiz->pista);
 
     printf("\n---------------------------\n");
     printf("Você está na sala: %s. Pista: %s\n", raiz->nome, raiz->pista);
@@ -71,16 +71,16 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas) {
         if (raiz->esquerda != NULL){
           raiz = raiz->esquerda;
         } else {
-          printf("Não há sala à esquerda. Saindo.\n");
-          return;
+          printf("Não há nenhuma sala à esquerda. Saindo...\n");
+          opcao = 's'; // Força a saída do loop
         }
         break;
       case 'd': // Escolha para o lado direito
         if (raiz->direita != NULL){
           raiz = raiz->direita;
         } else {
-          printf("Não há sala à direita. Saind.\n");
-          return;
+          printf("Não há sala à direita. Saindo...\n");
+          opcao = 's'; // Força a saída do loop
         }
         break;
       case 's': // Sair
@@ -90,6 +90,12 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas) {
         printf("Opção inválida. Use 'e', 'd' ou 's'.\n");
     }
   } while (opcao != 's');
+
+  // Mostra as pistas coletadas em ordem alfabética
+  printf("\n=====================================\n");
+  printf("Pistas coletadas em ordem alfabética:\n");
+  exibirPistas(arvorePistas);
+  printf("\n=====================================\n");
 }
 
 /**

@@ -29,18 +29,14 @@ No* criarNo(const char* valor) {
  * @param valor Valor a ser inserido
  * @return Ponteiro para a raiz atualizada da árvore
  */
-No* inserir(No* raiz, const char* valor) {
-  if (raiz == NULL){
-    return criarNo(valor);
+void inserir(No** raiz, const char* valor) {
+  if (*raiz == NULL){
+    *raiz = criarNo(valor);
+  } else if (strcmp(valor, (*raiz)->valor) < 0){
+      inserir(&(*raiz)->esquerda, valor);
+  } else if (strcmp(valor, (*raiz)->valor) > 0){
+      inserir(&(*raiz)->direita, valor);
   }
-
-  if (strcmp(valor, raiz->valor) < 0){
-      raiz->esquerda = inserir(raiz->esquerda, valor);
-  } else if (strcmp(valor, raiz->valor) > 0){
-      raiz->direita = inserir(raiz->direita, valor);
-  }
-
-  return raiz;
 }
 
 /**
@@ -63,6 +59,12 @@ int buscar(No* raiz, const char* chave) {
   }
 }
 
+/**
+ * @brief Função para remover um valor da árvore binária de busca
+ * @param raiz Ponteiro para a raiz da árvore
+ * @param valor Valor a ser removido
+ * @return Ponteiro para a raiz atualizada da árvore
+ */
 No* remover(No* raiz, const char* valor) {
   if (raiz == NULL){
     return NULL;
@@ -103,6 +105,7 @@ No* remover(No* raiz, const char* valor) {
 
   return raiz;
 }
+
 /**
  * @brief Função auxiliar para encontrar o nó mínimo em uma subárvore
  * @param raiz Ponteiro para a raiz da subárvore
@@ -114,4 +117,16 @@ No* encontrarMinimo(No* raiz) {
         atual = atual->esquerda;
     }
     return atual;
+}
+
+/**
+ * @brief Função para exibir os valores da árvore em ordem (emOrdem)
+ * @param arvorePistas Ponteiro para a raiz da árvore
+ */
+void exibirPistas(No* arvorePistas) {
+  if (arvorePistas != NULL) {
+    exibirPistas(arvorePistas->esquerda);
+    printf("'%s' ", arvorePistas->valor);
+    exibirPistas(arvorePistas->direita);
+  }
 }
