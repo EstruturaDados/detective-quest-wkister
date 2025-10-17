@@ -5,7 +5,7 @@
       "type": "shell",
       "command": "make",
       "args": [
-        "file=algoritmos_avancados.c"
+        "file=detetive.c"
       ],
       "group": "build",
       "problemMatcher": [
