@@ -25,17 +25,6 @@ int main() {
     // Liberar a memória alocada para a árvore de salas
     liberarMemoria(raiz);
 
-    // 🔍 Nível Aventureiro: Armazenamento de Pistas com Árvore de Busca
-    //
-    // - Crie uma struct Pista com campo texto (string).
-    // - Crie uma árvore binária de busca (BST) para inserir as pistas coletadas.
-    // - Ao visitar salas específicas, adicione pistas automaticamente com inserirBST().
-    // - Implemente uma função para exibir as pistas em ordem alfabética (emOrdem()).
-    // - Utilize alocação dinâmica e comparação de strings (strcmp) para organizar.
-    // - Não precisa remover ou balancear a árvore.
-    // - Use funções para modularizar: inserirPista(), listarPistas().
-    // - A árvore de pistas deve ser exibida quando o jogador quiser revisar evidências.
-
     // 🧠 Nível Mestre: Relacionamento de Pistas com Suspeitos via Hash
     //
     // - Crie uma struct Suspeito contendo nome e lista de pistas associadas.
