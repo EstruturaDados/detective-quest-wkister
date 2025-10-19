@@ -20,7 +20,8 @@ int main() {
     struct No* arvorePistas = NULL;
 
     // Exploração das salas pelo jogador
-    explorarSala(raiz, arvorePistas);
+    // explorarSala(raiz, arvorePistas);
+    explorarSala(raiz);
 
     // Liberar a memória alocada para a árvore de salas
     liberarMemoria(raiz);
