@@ -4,6 +4,7 @@
 #include "geral.h"
 #include "arvore.h"
 #include "bst.h"
+#include "tabela_hash.h"
 
 // Vetor de pistas
 char tipoPistas[MAX_PISTAS][TAM_STRING] = {
@@ -26,6 +27,14 @@ char nomesSalas[MAX_SALAS][TAM_STRING] = {
   "Biblioteca",
   "Quarto",
   "Cozinha"
+};
+
+// Lista de suspeitos
+struct Suspeito suspeitos[MAX_SUSPEITOS] = {
+  {"Ana", "Governanta"},
+  {"Bruno", "Escritor"},
+  {"Carlos", "Jardineiro"},
+  {"Amanda", "Enfermeira"}
 };
 
 /**
@@ -63,14 +72,14 @@ Sala* inicializarArvoreSalas() {
    *          Hall de Entrada
    *          /             \
    *   Sala de Estar     Biblioteca
-   *      /                   \
-   *    Quarto               Cozinha
+   *      /      \
+   *    Quarto  Jardim
+   *     /
+   *  Cozinha
    *
    * A árvore foi modificada para um 'grafo', onde cada sala pode voltar para a sala anterior, para atender às
    * necessidades da programação de que 'o jogo encerra quando quando o jogador decide sair'.
    */
-
-
 
   // Raiz da árvore
   Sala* hall = criarSala("Hall de Entrada");
@@ -87,7 +96,10 @@ Sala* inicializarArvoreSalas() {
 
   // Quarto <-> Sala de estar <-> Hall <-> Biblioteca
   Sala* quarto = criarSala("Quarto");
+  Sala* jardim = criarSala("Jardim");
   salaEstar->esquerda = quarto; // Link da sala de estar para o quarto pela esquerda
+  salaEstar->direita = jardim; // Link da sala de estar para o jardim pela direita
+  jardim->esquerda = salaEstar; // Link de volta para a sala de estar
   quarto->direita = salaEstar; // Link de volta para a sala de estar
 
   // Cozinha <-> Quarto <-> Sala de estar <-> Hall <-> Biblioteca
@@ -99,15 +111,52 @@ Sala* inicializarArvoreSalas() {
 }
 
 /**
+ * @brief Função para exibir a lista de suspeitos com suas profissões
+ */
+void exibirSuspeitos() {
+  /**
+   * @note Esta função exibe a lista de suspeitos disponíveis no jogo com suas respectivas profissões.
+   */
+  printf("\n=== Lista de Suspeitos ===\n");
+  for (int i = 0; i < MAX_SUSPEITOS; i++) {
+    printf("%d. %s - %s\n", i + 1, suspeitos[i].nome, suspeitos[i].profissao);
+  }
+  printf("=========================\n");
+}
+
+/**
  * @brief Função para liberar a memória alocada para a árvore de salas
  * @param raiz Ponteiro para a raiz da árvore de salas
  */
-void explorarSala(struct Sala* raiz, struct No* arvorePistas) {
+void explorarSala(struct Sala* raiz, struct No* arvorePistas, const EntradaTabelaHash* tabela_salas_pistas) {
+  // Variável para detectar movimento (0 = sem movimento, 1 = houve movimento)
+  int movimento = 1;
+
   // Navegação pela árvore de salas
   char opcao;
   do{
-    // Adicionar a pista da sala atual na árvore de pistas
-    // inserirBST(&arvorePistas, raiz->pista);
+    // Exibe a lista de suspeitos com suas profissões
+    exibirSuspeitos();
+
+    // Se houve movimento, significa que o jogador foi para uma sala diferente e coleta a pista da sala
+    if (movimento) {
+      // Procurar pelas pistas da sala atual na tabela hash
+      struct valor* pistas = pegarValoresTabelaHash(raiz->nome, tabela_salas_pistas);
+
+      while (pistas != NULL) {
+        // Verifica se a pista já foi coletada
+        if (!buscarBST(arvorePistas, pistas->valor)) {
+          // Adicionar a pista da sala atual na árvore de pistas
+          inserirBST(&arvorePistas, pistas->valor);
+          break;
+        }
+        pistas = pistas->proximo;
+      }
+    }
+
+    // Exibir as pistas em ordem alfabética
+    printf("Pistas(s) coletada(s): ");
+    exibirEmOrdem(arvorePistas);
 
     printf("\n---------------------------\n");
     // printf("Você está na sala: %s. Pista: %s\n", raiz->nome, raiz->pista);
@@ -121,17 +170,27 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas) {
       case 'e': // Escolha para o lado esquerdo
         if (raiz->esquerda != NULL){
           raiz = raiz->esquerda;
+
+          movimento = 1; // Houve movimento
         } else {
-          printf("Não há nenhuma sala à esquerda.\n");
-          // opcao = 's'; // Força a saída do loop
+          printf("\n=============================\n");
+          printf("= Não há nenhuma sala à esquerda. =\n");
+          printf("=============================\n");
+
+          movimento = 0;
         }
         break;
       case 'd': // Escolha para o lado direito
-        if (raiz->direita != NULL){
+      if (raiz->direita != NULL){
           raiz = raiz->direita;
+
+          movimento = 1; // Houve movimento
         } else {
-          printf("Não há sala à direita.\n");
-          // opcao = 's'; // Força a saída do loop
+          printf("\n=============================\n");
+          printf("=   Não há sala à direita. =\n");
+          printf("=============================\n");
+
+          movimento = 0;
         }
         break;
       case 's': // Sair
@@ -202,35 +261,6 @@ void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
-}
-
-/**
- * @brief Função para embaralhar um array usando o algoritmo Fisher-Yates
- * @param arr Array a ser embaralhado
- * @param size Tamanho do array
- */
-int* fisherYatesShuffle(const int original[], int size) {
-  // Aloca memória para a cópia
-  int *shuffled = (int*)malloc(size * sizeof(int));
-  if (shuffled == NULL) {
-    return NULL;
-  }
-
-  // Copia o array original
-  for (int i = 0; i < size; i++) {
-    shuffled[i] = original[i];
-  }
-
-  // Inicializa o gerador de números aleatórios
-  srand(time(NULL));
-
-  // Algoritmo Fisher-Yates
-  for (int i = size - 1; i > 0; i--) {
-    int j = rand() % (i + 1);
-    swap(&shuffled[i], &shuffled[j]);
-  }
-
-  return shuffled;
 }
 
 /**

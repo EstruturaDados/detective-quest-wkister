@@ -20,5 +20,6 @@ int buscarBST(No* raiz, const char* chave); // Busca um valor na árvore binári
 No* removerBST(No* raiz, const char* valor); // Remove um valor da árvore binária de busca
 No* encontrarMinimoBST(No* raiz); // Encontra o nó com o valor mínimo na árvore
 void exibirPistas(No* arvorePistas); // Exibe as pistas em ordem alfabética
+void exibirEmOrdem(No* raiz); // Exibe os valores da árvore em ordem (emOrdem)
 
 #endif

@@ -29,7 +29,7 @@ int main() {
     inicializarTabelaSalasPistas(tabela_salas_pistas);
 
     // Exploração das salas pelo jogador
-    explorarSala(raiz, arvorePistas);
+    explorarSala(raiz, arvorePistas, tabela_salas_pistas);
 
     exibirEstatisticas(tabelaPistasSuspeiros);
 

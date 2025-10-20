@@ -12,15 +12,28 @@
 
 #include "bst.h" // Inclusão do arquivo de árvore binária de busca
 
+// Forward declaration para evitar dependência circular
+struct EntradaTabelaHash;
+
 // --- Constantes ---
 #define MAX_PISTAS 10 // Número de tipos de pistas disponíveis (atualizado para tabela hash)
 #define MAX_SALAS 5  // Número máximo de salas na árvore
+#define MAX_SUSPEITOS 4 // Número máximo de suspeitos
 
 // Vetor de pistas
 extern char tipoPistas[MAX_PISTAS][TAM_STRING];
 
 // Vetor de salas
 extern char nomesSalas[MAX_SALAS][TAM_STRING];
+
+// Estrutura de suspeitos
+typedef struct Suspeito {
+  char nome[TAM_STRING];
+  char profissao[TAM_STRING];
+} Suspeito;
+
+// Lista de suspeitos
+extern struct Suspeito suspeitos[MAX_SUSPEITOS];
 
 // Definição da estrutura de um nó na árvore binária
 typedef struct Sala {
@@ -33,7 +46,7 @@ typedef struct Sala {
 // Protóripos das funções
 Sala* criarSala(char* nome); // Cria uma nova sala na árvore
 Sala* inicializarArvoreSalas(); // Inicializa a árvore de salas do tabuleiro
-void explorarSala(struct Sala* raiz, struct No* arvorePistas); // Permite a navegação do jogador pela árvore
+void explorarSala(struct Sala* raiz, struct No* arvorePistas, const struct EntradaTabelaHash* tabela_salas_pistas); // Permite a navegação do jogador pela árvore
 // void explorarSala(struct Sala* raiz); // Permite a navegação do jogador pela árvore
 void liberarMemoria(struct Sala* raiz); // Libera a memória alocada para a árvore
 int* fisherYatesIndices(int size); // Gera uma permutação aleatória de índices

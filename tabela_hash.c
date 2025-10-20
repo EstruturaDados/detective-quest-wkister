@@ -8,14 +8,6 @@
 #include <string.h>
 #include "tabela_hash.h"
 
-// Lista de suspeitos
-char suspeitos[MAX_SUSPEITOS][50] = {
-  "Ana",
-  "Bruno",
-  "Carlos",
-  "Amanda"
-};
-
 /**
  * @brief Calcula o índice hash para uma chave de string.
  * @param chave String utilizada como chave de hash.
@@ -44,10 +36,10 @@ void inserirTabelaHash(const char* chave, const char* valor, EntradaTabelaHash* 
     int pos = (indice + i) % TAMANHO_TABELA;
 
     if (tabela_hash[pos].ocupado == 0 || tabela_hash[pos].ocupado == -1) {
-      strcpy(tabela_hash[pos].chave, chave);
       strcpy(tabela_hash[pos].valor, valor);
+      strcpy(tabela_hash[pos].chave, chave);
       tabela_hash[pos].ocupado = 1;
-      printf("'%s' -> '%s' inserido na posição %d.\n", chave, valor, pos);
+      printf("'%s' -> '%s' inserido na posição %d. Status: %d\n", chave, tabela_hash[pos].valor, pos, tabela_hash[pos].ocupado);
       // printf("-------------------------------------------\n");
       return;
     }
@@ -58,13 +50,48 @@ void inserirTabelaHash(const char* chave, const char* valor, EntradaTabelaHash* 
 }
 
 /**
- * @brief Busca uma pista na tabela hash.
- * @param pista String com a pista a ser buscada.
+ * @brief Obtém todos os valores associados a uma chave na tabela hash.
+ * @param chave String com a chave a ser buscada.
+ * @param tabela_hash Ponteiro para a tabela hash.
+ * @return Valores associados à chave ou NULL se não encontrado.
+ */
+struct valor* pegarValoresTabelaHash(const char* chave, const EntradaTabelaHash* tabela_hash) {
+  int indice = funcao_hash(chave);
+
+  // Define o ponteiro que guardar os valores encontrados
+  struct valor* valores = NULL;
+
+  // Varre TODA a tabela para encontrar todas as entradas com a chave
+  for (int i = 0; i < TAMANHO_TABELA; i++) {
+    int pos = (indice + i) % TAMANHO_TABELA;
+
+    struct EntradaTabelaHash entradaAtual = tabela_hash[pos];
+
+    // Debug: mostra o que está sendo verificado
+    // printf("Verificando posição %d: chave='%s', valor='%s', ocupado=%d\n",
+    //        pos, entradaAtual.chave, entradaAtual.valor, entradaAtual.ocupado);
+
+    // Coleta TODAS as entradas ocupadas que têm a chave procurada
+    if (entradaAtual.ocupado == 1 && strcmp(entradaAtual.chave, chave) == 0) {
+      // printf("  -> MATCH! Adicionando valor '%s' à lista\n", entradaAtual.valor);
+      struct valor* novoValor = (struct valor*) malloc(sizeof(struct valor));
+      strcpy(novoValor->valor, tabela_hash[pos].valor);
+      novoValor->proximo = valores;
+      valores = novoValor;
+    }
+  }
+
+  return valores;
+}
+
+/**
+ * @brief Busca uma chave na tabela hash.
+ * @param valor String com a pista a ser buscada.
  * @param tabela_hash Ponteiro para a tabela hash.
  * @return Índice da pista na tabela, ou -1 se não encontrado.
  */
-int buscarPistaTabelaHash(const char* pista, const EntradaTabelaHash* tabela_hash) {
-  int indice = funcao_hash(pista);
+int buscarPistaTabelaHash(const char* valor, const EntradaTabelaHash* tabela_hash) {
+  int indice = funcao_hash(valor);
 
   for (int i = 0; i < TAMANHO_TABELA; i++) {
     int pos = (indice + i) % TAMANHO_TABELA;
@@ -186,7 +213,7 @@ void exibirEstatisticas(const EntradaTabelaHash* tabela_hash) {
   for (int i = 0; i < TAMANHO_TABELA; i++) {
     if (tabela_hash[i].ocupado == 1) {
       for (int j = 0; j < MAX_SUSPEITOS; j++) {
-        // if (strcmp(tabela_hash[i].suspeito, suspeitos[j]) == 0) {
+        // if (strcmp(tabela_hash[i].valor, suspeitos[j].nome) == 0) {
         //   contagem[j]++;
         //   break;
         // }
@@ -196,7 +223,7 @@ void exibirEstatisticas(const EntradaTabelaHash* tabela_hash) {
 
   // Exibe as estatísticas
   for (int i = 0; i < MAX_SUSPEITOS; i++) {
-    printf("%s: %d pista(s)\n", suspeitos[i], contagem[i]);
+    printf("%s: %d pista(s)\n", suspeitos[i].nome, contagem[i]);
   }
   printf("\n");
 }

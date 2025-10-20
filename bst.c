@@ -130,3 +130,16 @@ void exibirPistas(No* arvorePistas) {
     exibirPistas(arvorePistas->direita);
   }
 }
+
+/**
+ * @brief Funções para percorrer a árvore em ordem
+ * @note Na seguinte ordem: esquerda, raiz, direita
+ * @param raiz Ponteiro para a raiz da árvore
+ */
+void exibirEmOrdem(No* raiz) {
+  if (raiz != NULL) {
+    exibirEmOrdem(raiz->esquerda);
+    printf("'%s' ", raiz->valor);
+    exibirEmOrdem(raiz->direita);
+  }
+}
