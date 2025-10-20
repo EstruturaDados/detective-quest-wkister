@@ -128,7 +128,7 @@ void exibirSuspeitos() {
  * @brief Função para liberar a memória alocada para a árvore de salas
  * @param raiz Ponteiro para a raiz da árvore de salas
  */
-void explorarSala(struct Sala* raiz, struct No* arvorePistas, const EntradaTabelaHash* tabela_salas_pistas) {
+void explorarSala(struct Sala* raiz, struct No* arvorePistas, const EntradaTabelaHash* tabelaSalasPistas, const EntradaTabelaHash* tabelaPistasSuspeiros) {
   // Variável para detectar movimento (0 = sem movimento, 1 = houve movimento)
   int movimento = 1;
 
@@ -141,7 +141,7 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas, const EntradaTabel
     // Se houve movimento, significa que o jogador foi para uma sala diferente e coleta a pista da sala
     if (movimento) {
       // Procurar pelas pistas da sala atual na tabela hash
-      struct valor* pistas = pegarValoresTabelaHash(raiz->nome, tabela_salas_pistas);
+      struct valor* pistas = pegarValoresTabelaHash(raiz->nome, tabelaSalasPistas);
 
       while (pistas != NULL) {
         // Verifica se a pista já foi coletada
@@ -163,7 +163,7 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas, const EntradaTabel
     printf("Você está na sala: %s.\n", raiz->nome);
     printf("---------------------------\n");
     // Perguntar para onde deseja ir
-    printf("Para onde deseja ir? (e: esquerda, d: direita, s: sair): ");
+    printf("Para onde deseja ir? (t: suspeito, e: esquerda, d: direita, s: sair): ");
     scanf(" %c", &opcao);
     limparBufferEntrada();
     switch(opcao){
@@ -193,11 +193,14 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas, const EntradaTabel
           movimento = 0;
         }
         break;
+      case 't':
+        escolherSuspeito(arvorePistas, tabelaPistasSuspeiros);
+        break;
       case 's': // Sair
         printf("Saindo da exploração das salas.\n");
         break;
       default:
-        printf("Opção inválida. Use 'e', 'd' ou 's'.\n");
+        printf("Opção inválida. Use 'suspei(t)o, (e)squerda', '(d)ireita' ou '(s)air'.\n");
     }
   } while (opcao != 's');
 
@@ -288,4 +291,35 @@ int* fisherYatesIndices(int size) {
   }
 
   return indices;
+}
+
+void escolherSuspeito(const struct No* arvorePistas, const EntradaTabelaHash* tabelaPistasSuspeiros) {
+  // Estrutura para o tipo suspeito
+  struct suspeito {
+    char nome[TAM_STRING];
+    int contagem;
+  } suspeito;
+
+  // Estrutura para armazenar os suspeitos e suas contagens
+  struct suspeito suspeitosContagem[MAX_SUSPEITOS];
+
+  // Varrendo a árvore de pistas para contar as pistas por suspeito
+  struct No* atual = arvorePistas;
+
+
+
+
+  int escolha;
+  exibirSuspeitos();
+  printf("Escolha o número do suspeito que deseja acusar: ");
+  scanf("%d", &escolha);
+  limparBufferEntrada();
+  do{
+    printf("Você acusou %s, o(a) %s.\n", suspeitos[escolha - 1].nome, suspeitos[escolha - 1].profissao);
+
+    char acusado = suspeitos[escolha - 1].nome;
+
+
+
+  } while(escolha < 1 || escolha > MAX_SUSPEITOS);
 }

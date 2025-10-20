@@ -85,12 +85,12 @@ struct valor* pegarValoresTabelaHash(const char* chave, const EntradaTabelaHash*
 }
 
 /**
- * @brief Busca uma chave na tabela hash.
+ * @brief Busca um valor na tabela hash
  * @param valor String com a pista a ser buscada.
  * @param tabela_hash Ponteiro para a tabela hash.
  * @return Índice da pista na tabela, ou -1 se não encontrado.
  */
-int buscarPistaTabelaHash(const char* valor, const EntradaTabelaHash* tabela_hash) {
+int buscarValorTabelaHash(const char* valor, const EntradaTabelaHash* tabela_hash) {
   int indice = funcao_hash(valor);
 
   for (int i = 0; i < TAMANHO_TABELA; i++) {

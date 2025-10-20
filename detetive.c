@@ -25,11 +25,11 @@ int main() {
     inicializarTabelaPistasSuspeitos(tabelaPistasSuspeiros);
 
     // Definição da tabela hash para salas e pistas
-    EntradaTabelaHash tabela_salas_pistas[TAMANHO_TABELA];
-    inicializarTabelaSalasPistas(tabela_salas_pistas);
+    EntradaTabelaHash tabelaSalasPistas[TAMANHO_TABELA];
+    inicializarTabelaSalasPistas(tabelaSalasPistas);
 
     // Exploração das salas pelo jogador
-    explorarSala(raiz, arvorePistas, tabela_salas_pistas);
+    explorarSala(raiz, arvorePistas, tabelaSalasPistas);
 
     exibirEstatisticas(tabelaPistasSuspeiros);
 
