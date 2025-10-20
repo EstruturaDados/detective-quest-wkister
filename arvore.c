@@ -5,58 +5,93 @@
 #include "arvore.h"
 #include "bst.h"
 
-char tipoPistas[TAM_PISTAS][TAM_STRING] = {
-    "Pegadas de Lama",
-    "Chave perdida",
-    "Livro com pagina faltando",
-    "Lencol manchado",
-    "Gaveta perdida"
+// Vetor de pistas
+char tipoPistas[MAX_PISTAS][TAM_STRING] = {
+    "Chave antiga",
+    "Mochila rosa",
+    "Agenda cheia",
+    "Livro grande",
+    "Tinta preta",
+    "Caneta azul",
+    "Terra molhada",
+    "Folhas verdes",
+    "Remedio forte",
+    "Lenço limpo"
+};
+
+// Vetor de salas
+char nomesSalas[MAX_SALAS][TAM_STRING] = {
+  "Hall de Entrada",
+  "Sala de Estar",
+  "Biblioteca",
+  "Quarto",
+  "Cozinha"
 };
 
 /**
  * @brief Função para criar uma nova sala na árvore do tabuleiro
  * @param nome Nome da sala a ser armazenado
+ * @param pista Pista associada à sala
  * @return Ponteiro para a nova sala criado
  */
-Sala* criarSala(char* nome, char* pista) {
+Sala* criarSala(char* nome) {
+  /**
+   * @note Esta função aloca memória para uma nova sala, inicializa seus campos
+   *       e retorna um ponteiro para essa sala.
+   * Foi criada a tag 'visitado' para controle de liberação de memória em grafos com ciclos. O grafo
+   * permite que o jogador retorne a salas já visitadas.
+   */
   // Criação da nova sala
   Sala* novo = (Sala*) malloc(sizeof(Sala));
   strcpy(novo->nome, nome);
-  strcpy(novo->pista, pista);
   novo->esquerda = NULL;
   novo->direita = NULL;
-  novo->visitado = 0; // Inicializa como não visitado
+  novo->visitado = 0; // Inicializa como não visitado. Tag criada para liberação de memória em grafos com ciclos
   return novo;
 }
 
 /**
  * @brief Função para inicializar a árvore de salas do tabuleiro
+ * @note  A quantidade de salas não pode ultrapasar o número de pistas disponíveis (MAX_PISTAS), pois não existem
+ *        salas sem pistas.
  * @return Ponteiro para a raiz da árvore de salas
  */
 Sala* inicializarArvoreSalas() {
-  // Vetor de índices para embaralhar as pistas
-  int* indicesEmbaralhados = fisherYatesIndices(TAM_PISTAS);
+  /**
+   * Estrutura da Árvore de Salas:
+   * A estrutura da árvore é a seguinte:
+   *          Hall de Entrada
+   *          /             \
+   *   Sala de Estar     Biblioteca
+   *      /                   \
+   *    Quarto               Cozinha
+   *
+   * A árvore foi modificada para um 'grafo', onde cada sala pode voltar para a sala anterior, para atender às
+   * necessidades da programação de que 'o jogo encerra quando quando o jogador decide sair'.
+   */
+
+
 
   // Raiz da árvore
-  Sala* hall = criarSala("Hall de Entrada", tipoPistas[indicesEmbaralhados[0]]);
+  Sala* hall = criarSala("Hall de Entrada");
 
   // Sala de estar <-> Hall
-  Sala* salaEstar = criarSala("Sala de Estar", tipoPistas[indicesEmbaralhados[1]]);
+  Sala* salaEstar = criarSala("Sala de Estar");
   hall->esquerda = salaEstar; // Link do hall para a sala de estar pela esquerda
   salaEstar->direita = hall; // Link de volta para o hall
 
   // Sala de estar <-> Hall <-> Biblioteca
-  Sala* biblioteca = criarSala("Biblioteca", tipoPistas[indicesEmbaralhados[2]]);
+  Sala* biblioteca = criarSala("Biblioteca");
   hall->direita = biblioteca; // Link do hall para a biblioteca pela direita
   biblioteca->esquerda = hall; // Link de volta para o hall
 
   // Quarto <-> Sala de estar <-> Hall <-> Biblioteca
-  Sala* quarto = criarSala("Quarto", tipoPistas[indicesEmbaralhados[3]]);
+  Sala* quarto = criarSala("Quarto");
   salaEstar->esquerda = quarto; // Link da sala de estar para o quarto pela esquerda
   quarto->direita = salaEstar; // Link de volta para a sala de estar
 
   // Cozinha <-> Quarto <-> Sala de estar <-> Hall <-> Biblioteca
-  Sala* cozinha = criarSala("Cozinha", tipoPistas[indicesEmbaralhados[4]]);
+  Sala* cozinha = criarSala("Cozinha");
   quarto->esquerda = cozinha; // Link da sala de estar para a cozinha pela direita
   cozinha->direita = quarto; // Link de volta para a sala de estar
 
@@ -67,16 +102,16 @@ Sala* inicializarArvoreSalas() {
  * @brief Função para liberar a memória alocada para a árvore de salas
  * @param raiz Ponteiro para a raiz da árvore de salas
  */
-// void explorarSala(struct Sala* raiz, struct No* arvorePistas) {
-void explorarSala(struct Sala* raiz) {
+void explorarSala(struct Sala* raiz, struct No* arvorePistas) {
   // Navegação pela árvore de salas
   char opcao;
   do{
     // Adicionar a pista da sala atual na árvore de pistas
-    // inserir(&arvorePistas, raiz->pista);
+    // inserirBST(&arvorePistas, raiz->pista);
 
     printf("\n---------------------------\n");
-    printf("Você está na sala: %s. Pista: %s\n", raiz->nome, raiz->pista);
+    // printf("Você está na sala: %s. Pista: %s\n", raiz->nome, raiz->pista);
+    printf("Você está na sala: %s.\n", raiz->nome);
     printf("---------------------------\n");
     // Perguntar para onde deseja ir
     printf("Para onde deseja ir? (e: esquerda, d: direita, s: sair): ");
@@ -108,10 +143,10 @@ void explorarSala(struct Sala* raiz) {
   } while (opcao != 's');
 
   // Mostra as pistas coletadas em ordem alfabética
-  // printf("\n=====================================\n");
-  // printf("Pistas coletadas em ordem alfabética:\n");
-  // exibirPistas(arvorePistas);
-  // printf("\n=====================================\n");
+  printf("\n=====================================\n");
+  printf("Pistas coletadas em ordem alfabética:\n");
+  exibirPistas(arvorePistas);
+  printf("\n=====================================\n");
 }
 
 /**

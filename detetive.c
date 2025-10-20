@@ -11,6 +11,7 @@
 #include "geral.h" // Protótipos das funções e definições gerais
 #include "arvore.h" // Protótipos das funções e definições de árvores
 #include "bst.h" // Protótipos das funções e definições de árvores binárias de busca
+#include "tabela_hash.h" // Protótipos das funções e definições de tabela hash
 
 int main() {
     // Definição e inicialização da raiz da árvore de salas
@@ -19,9 +20,18 @@ int main() {
     // Definição da variável para a árvore de pistas (BST)
     struct No* arvorePistas = NULL;
 
+    // Definição da tabela hash para pistas e suspeitos
+    EntradaTabelaHash tabelaPistasSuspeiros[TAMANHO_TABELA];
+    inicializarTabelaPistasSuspeitos(tabelaPistasSuspeiros);
+
+    // Definição da tabela hash para salas e pistas
+    EntradaTabelaHash tabela_salas_pistas[TAMANHO_TABELA];
+    inicializarTabelaSalasPistas(tabela_salas_pistas);
+
     // Exploração das salas pelo jogador
-    // explorarSala(raiz, arvorePistas);
-    explorarSala(raiz);
+    explorarSala(raiz, arvorePistas);
+
+    exibirEstatisticas(tabelaPistasSuspeiros);
 
     // Liberar a memória alocada para a árvore de salas
     liberarMemoria(raiz);

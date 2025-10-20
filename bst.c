@@ -29,13 +29,13 @@ No* criarNo(const char* valor) {
  * @param valor Valor a ser inserido
  * @return Ponteiro para a raiz atualizada da árvore
  */
-void inserir(No** raiz, const char* valor) {
+void inserirBST(No** raiz, const char* valor) {
   if (*raiz == NULL){
     *raiz = criarNo(valor);
   } else if (strcmp(valor, (*raiz)->valor) < 0){
-      inserir(&(*raiz)->esquerda, valor);
+      inserirBST(&(*raiz)->esquerda, valor);
   } else if (strcmp(valor, (*raiz)->valor) > 0){
-      inserir(&(*raiz)->direita, valor);
+      inserirBST(&(*raiz)->direita, valor);
   }
 }
 
@@ -45,7 +45,7 @@ void inserir(No** raiz, const char* valor) {
  * @param chave Valor a ser buscado
  * @return 1 se encontrado, 0 caso contrário
  */
-int buscar(No* raiz, const char* chave) {
+int buscarBST(No* raiz, const char* chave) {
   if (raiz == NULL){
     return 0;
   }
@@ -53,9 +53,9 @@ int buscar(No* raiz, const char* chave) {
   if (strcmp(chave, raiz->valor) == 0){
     return 1;
   } else if (strcmp(chave, raiz->valor) < 0){
-    return buscar(raiz->esquerda, chave);
+    return buscarBST(raiz->esquerda, chave);
   } else {
-    return buscar(raiz->direita, chave);
+    return buscarBST(raiz->direita, chave);
   }
 }
 
@@ -65,15 +65,15 @@ int buscar(No* raiz, const char* chave) {
  * @param valor Valor a ser removido
  * @return Ponteiro para a raiz atualizada da árvore
  */
-No* remover(No* raiz, const char* valor) {
+No* removerBST(No* raiz, const char* valor) {
   if (raiz == NULL){
     return NULL;
   }
 
   if (strcmp(valor, raiz->valor) < 0) {
-    raiz->esquerda = remover(raiz->esquerda, valor);
+    raiz->esquerda = removerBST(raiz->esquerda, valor);
   } else if (strcmp(valor, raiz->valor) > 0) {
-    raiz->direita = remover(raiz->direita, valor);
+    raiz->direita = removerBST(raiz->direita, valor);
   } else {
     if (raiz->esquerda == NULL && raiz->direita == NULL) {
       // Caso 1: sem filhos
@@ -95,11 +95,11 @@ No* remover(No* raiz, const char* valor) {
 
       // Caso 3: dois filhos
     } else {
-      No* sucessor = encontrarMinimo(raiz->direita);
+      No* sucessor = encontrarMinimoBST(raiz->direita);
       free(raiz->valor);
       // raiz->valor = strdup(sucessor->valor);
       strcpy(raiz->valor, sucessor->valor);
-      raiz->direita = remover(raiz->direita, sucessor->valor);
+      raiz->direita = removerBST(raiz->direita, sucessor->valor);
     }
   }
 
@@ -111,7 +111,7 @@ No* remover(No* raiz, const char* valor) {
  * @param raiz Ponteiro para a raiz da subárvore
  * @return Ponteiro para o nó com o valor mínimo
  */
-No* encontrarMinimo(No* raiz) {
+No* encontrarMinimoBST(No* raiz) {
     No* atual = raiz;
     while (atual && atual->esquerda != NULL) {
         atual = atual->esquerda;

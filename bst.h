@@ -15,10 +15,10 @@ typedef struct No {
 } No;
 
 No* criarNo(const char* valor); // Cria um novo nó na árvore
-void inserir(No** raiz, const char* valor); // Insere um novo valor na árvore binária de busca
-int buscar(No* raiz, const char* chave); // Busca um valor na árvore binária de busca
-No* remover(No* raiz, const char* valor); // Remove um valor da árvore binária de busca
-No* encontrarMinimo(No* raiz); // Encontra o nó com o valor mínimo na árvore
+void inserirBST(No** raiz, const char* valor); // Insere um novo valor na árvore binária de busca
+int buscarBST(No* raiz, const char* chave); // Busca um valor na árvore binária de busca
+No* removerBST(No* raiz, const char* valor); // Remove um valor da árvore binária de busca
+No* encontrarMinimoBST(No* raiz); // Encontra o nó com o valor mínimo na árvore
 void exibirPistas(No* arvorePistas); // Exibe as pistas em ordem alfabética
 
 #endif

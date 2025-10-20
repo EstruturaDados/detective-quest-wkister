@@ -31,6 +31,10 @@ ARVORE_OBJ = $(OBJDIR)/arvore.o
 BST_SRC = bst.c
 BST_OBJ = $(OBJDIR)/bst.o
 
+# Adicione o caminho para tabela_hash.c
+TABELA_HASH_SRC = tabela_hash.c
+TABELA_HASH_OBJ = $(OBJDIR)/tabela_hash.o
+
 # Permite compilar um arquivo específico: make file=exemplo.c
 ifeq ($(file),)
 all: dirs $(TARGETS)
@@ -53,10 +57,10 @@ ifeq ($(HAS_MAIN),0)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
 else
 	@echo "Compilando e linkando $(FILE_PATH) (possui main)"
-	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ)
+	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ) $(TABELA_HASH_OBJ)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
-# 	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ) -o $(FILE_BIN)
-	$(CC) $(LDFLAGS) $(FILE_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ) -o $(FILE_BIN)
+# 	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ) $(TABELA_HASH_OBJ) -o $(FILE_BIN)
+	$(CC) $(LDFLAGS) $(FILE_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ) $(TABELA_HASH_OBJ) -o $(FILE_BIN)
 endif
 endif
 
@@ -75,6 +79,10 @@ $(ARVORE_OBJ): $(ARVORE_SRC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BST_OBJ): $(BST_SRC)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TABELA_HASH_OBJ): $(TABELA_HASH_SRC)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
