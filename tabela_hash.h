@@ -13,11 +13,9 @@
 // --- Constantes ---
 #define TAMANHO_TABELA 20  // Aumentado para acomodar mais pistas
 
-// Estrutura para valores associados a uma chave (lista encadeada)
-struct valor {
-  char valor[50];
-  struct valor* proximo;
-};
+// Forward declarations (definições completas em arvore.h)
+struct valor;
+struct listaNo;
 
 // Estrutura para uma entrada na tabela hash (pista -> suspeito)
 typedef struct EntradaTabelaHash {

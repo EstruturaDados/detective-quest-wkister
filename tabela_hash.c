@@ -199,31 +199,3 @@ void inicializarTabelaSalasPistas(EntradaTabelaHash* tabela_hash){
   free(indicesPistasEmbaralhadas); // Libera memória alocada
   printf("=== Finalizado Tabela Hash de Pistas -> Suspeitos ===\n");
 }
-
-/**
- * @brief Exibe estatísticas sobre as pistas por suspeito.
- * @param tabela_hash Ponteiro para a tabela hash.
- */
-void exibirEstatisticas(const EntradaTabelaHash* tabela_hash) {
-  int contagem[MAX_SUSPEITOS] = {0};
-
-  printf("\n=== Estatísticas: Pistas por Suspeito ===\n");
-
-  // Conta quantas pistas apontam para cada suspeito
-  for (int i = 0; i < TAMANHO_TABELA; i++) {
-    if (tabela_hash[i].ocupado == 1) {
-      for (int j = 0; j < MAX_SUSPEITOS; j++) {
-        // if (strcmp(tabela_hash[i].valor, suspeitos[j].nome) == 0) {
-        //   contagem[j]++;
-        //   break;
-        // }
-      }
-    }
-  }
-
-  // Exibe as estatísticas
-  for (int i = 0; i < MAX_SUSPEITOS; i++) {
-    printf("%s: %d pista(s)\n", suspeitos[i].nome, contagem[i]);
-  }
-  printf("\n");
-}

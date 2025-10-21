@@ -195,6 +195,7 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas, const EntradaTabel
         break;
       case 't':
         escolherSuspeito(arvorePistas, tabelaPistasSuspeiros);
+        return; // Sai da função após escolher o suspeito
         break;
       case 's': // Sair
         printf("Saindo da exploração das salas.\n");
@@ -294,32 +295,113 @@ int* fisherYatesIndices(int size) {
 }
 
 void escolherSuspeito(const struct No* arvorePistas, const EntradaTabelaHash* tabelaPistasSuspeiros) {
-  // Estrutura para o tipo suspeito
-  struct suspeito {
-    char nome[TAM_STRING];
-    int contagem;
-  } suspeito;
-
-  // Estrutura para armazenar os suspeitos e suas contagens
-  struct suspeito suspeitosContagem[MAX_SUSPEITOS];
-
-  // Varrendo a árvore de pistas para contar as pistas por suspeito
-  struct No* atual = arvorePistas;
-
-
-
-
   int escolha;
   exibirSuspeitos();
   printf("Escolha o número do suspeito que deseja acusar: ");
   scanf("%d", &escolha);
   limparBufferEntrada();
-  do{
-    printf("Você acusou %s, o(a) %s.\n", suspeitos[escolha - 1].nome, suspeitos[escolha - 1].profissao);
 
-    char acusado = suspeitos[escolha - 1].nome;
+  while(escolha < 1 || escolha > MAX_SUSPEITOS) {
+    printf("Escolha inválida. Tente novamente: ");
+    scanf("%d", &escolha);
+    limparBufferEntrada();
+  }
 
+  printf("Você acusou %s, o(a) %s.\n", suspeitos[escolha - 1].nome, suspeitos[escolha - 1].profissao);
 
+  // Estrutura para armazenar os suspeitos e quantas e quais pistas foram associadas a cada um
+  struct {
+    char nome[TAM_STRING];
+    int contagem;
+    char pistas[MAX_PISTAS][TAM_STRING];
+  } suspeitosContagem[MAX_SUSPEITOS];
 
-  } while(escolha < 1 || escolha > MAX_SUSPEITOS);
+  // Inicializa as contagens
+  for (int i = 0; i < MAX_SUSPEITOS; i++) {
+    strcpy(suspeitosContagem[i].nome, suspeitos[i].nome);
+    suspeitosContagem[i].contagem = 0;
+  }
+
+  // Transformando a árvore binária em lista encadeada para facilitar a iteração
+  struct listaNo* listaEncadeada = arvoreParaListaEncadeada(arvorePistas);
+  struct listaNo* atual = listaEncadeada;
+
+  // Varrendo a lista de pistas para contar as pistas por suspeito
+  while (atual != NULL){
+    // Pega os suspeitos associados à pista atual
+    struct valor* suspeitosAssociados = pegarValoresTabelaHash(atual->valor, tabelaPistasSuspeiros);
+    while (suspeitosAssociados != NULL) {
+      // Incrementa a contagem para o suspeito correspondente
+      for (int i = 0; i < MAX_SUSPEITOS; i++) {
+        if (strcmp(suspeitosAssociados->valor, suspeitosContagem[i].nome) == 0) {
+          suspeitosContagem[i].contagem++;
+          strcpy(suspeitosContagem[i].pistas[suspeitosContagem[i].contagem - 1], atual->valor);
+          break;
+        }
+      }
+      suspeitosAssociados = suspeitosAssociados->proximo;
+    }
+    atual = atual->proximo;
+  }
+
+  // Verificando se a acusação está correta
+  if (suspeitosContagem[escolha - 1].contagem > 1) {
+    printf("\nParabéns! Sua acusação está correta. %s tem as seguintes pistas contra ele(a):", suspeitos[escolha - 1].nome);
+    for (int i = 0; i < suspeitosContagem[escolha - 1].contagem; i++) {
+      printf("\n- %s", suspeitosContagem[escolha - 1].pistas[i]);
+    }
+    printf("\n");
+  } else {
+    printf("\nSua acusação está incorreta. %s não tem pistas suficientes contra ele(a).\n", suspeitos[escolha - 1].nome);
+  }
+
+  // Liberando a memória da lista encadeada
+  while (listaEncadeada != NULL) {
+    struct listaNo* temp = listaEncadeada;
+    listaEncadeada = listaEncadeada->proximo;
+    free(temp);
+  }
+}
+
+/**
+ * @brief Função auxiliar recursiva para converter árvore em lista encadeada em ordem
+ * @param raiz Ponteiro para a raiz da árvore binária
+ * @param lista Ponteiro para ponteiro da cabeça da lista (passado por referência)
+ * @param cauda Ponteiro para ponteiro da cauda da lista (para inserção eficiente no final)
+ */
+static void arvoreParaListaEncadeadaAux(const struct No* raiz, struct listaNo** lista, struct listaNo** cauda) {
+  if (raiz == NULL) return;
+
+  // Percorre a subárvore esquerda primeiro (ordem crescente em BST)
+  arvoreParaListaEncadeadaAux(raiz->esquerda, lista, cauda);
+
+  // Processa o nó atual
+  struct listaNo* novoNo = (struct listaNo*) malloc(sizeof(struct listaNo));
+  strcpy(novoNo->valor, raiz->valor);
+  novoNo->proximo = NULL;
+
+  // Se a lista está vazia, este é o primeiro nó
+  if (*lista == NULL) {
+    *lista = novoNo;
+    *cauda = novoNo;
+  } else {
+    // Adiciona no final da lista para manter a ordem
+    (*cauda)->proximo = novoNo;
+    *cauda = novoNo;
+  }
+
+  // Percorre a subárvore direita
+  arvoreParaListaEncadeadaAux(raiz->direita, lista, cauda);
+}
+
+/**
+ * @brief Função para converter uma árvore binária em uma lista encadeada em ordem
+ * @param raiz Ponteiro para a raiz da árvore binária
+ * @return Ponteiro para a cabeça da lista encadeada (em ordem crescente para BST)
+ */
+struct listaNo* arvoreParaListaEncadeada(const struct No* raiz) {
+  struct listaNo* lista = NULL;
+  struct listaNo* cauda = NULL;
+  arvoreParaListaEncadeadaAux(raiz, &lista, &cauda);
+  return lista;
 }

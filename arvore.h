@@ -12,8 +12,14 @@
 
 #include "bst.h" // Inclusão do arquivo de árvore binária de busca
 
-// Forward declaration para evitar dependência circular
+// Forward declarations para evitar dependência circular
 struct EntradaTabelaHash;
+
+// Estrutura para valores em lista encadeada (usado para múltiplos valores por chave)
+struct valor {
+  char valor[TAM_STRING];
+  struct valor* proximo;
+};
 
 // --- Constantes ---
 #define MAX_PISTAS 10 // Número de tipos de pistas disponíveis (atualizado para tabela hash)
@@ -43,14 +49,23 @@ typedef struct Sala {
   int visitado; // Flag para controle de liberação de memória em grafos com ciclos
 } Sala;
 
+// Estrutura para lista encadeada de strings
+struct listaNo {
+  char valor[TAM_STRING];
+  struct listaNo* proximo;
+};
+
 // Protóripos das funções
 Sala* criarSala(char* nome); // Cria uma nova sala na árvore
 Sala* inicializarArvoreSalas(); // Inicializa a árvore de salas do tabuleiro
-void explorarSala(struct Sala* raiz, struct No* arvorePistas, const struct EntradaTabelaHash* tabela_salas_pistas); // Permite a navegação do jogador pela árvore
+void explorarSala(struct Sala* raiz, struct No* arvorePistas, const struct EntradaTabelaHash* tabelaSalasPistas, const struct EntradaTabelaHash* tabelaPistasSuspeiros); // Permite a navegação do jogador pela árvore
 // void explorarSala(struct Sala* raiz); // Permite a navegação do jogador pela árvore
 void liberarMemoria(struct Sala* raiz); // Libera a memória alocada para a árvore
 int* fisherYatesIndices(int size); // Gera uma permutação aleatória de índices
 int* fisherYatesShuffle(const int original[], int size); // Embaralha um array usando o algoritmo Fisher-Yates
 void swap(int *a, int *b); // Troca dois elementos
+void exibirSuspeitos(); // Exibe a lista de suspeitos com suas profissões
+void escolherSuspeito(const struct No* arvorePistas, const struct EntradaTabelaHash* tabelaPistasSuspeiros); // Permite ao jogador escolher um suspeito
+struct listaNo* arvoreParaListaEncadeada(const struct No* raiz); // Converte uma árvore binária em uma lista encadeada
 
 #endif

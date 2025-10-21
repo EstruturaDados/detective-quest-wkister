@@ -29,9 +29,7 @@ int main() {
     inicializarTabelaSalasPistas(tabelaSalasPistas);
 
     // Exploração das salas pelo jogador
-    explorarSala(raiz, arvorePistas, tabelaSalasPistas);
-
-    exibirEstatisticas(tabelaPistasSuspeiros);
+    explorarSala(raiz, arvorePistas, tabelaSalasPistas, tabelaPistasSuspeiros);
 
     // Liberar a memória alocada para a árvore de salas
     liberarMemoria(raiz);
