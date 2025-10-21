@@ -60,80 +60,8 @@ int buscarBST(No* raiz, const char* chave) {
 }
 
 /**
- * @brief Função para remover um valor da árvore binária de busca
- * @param raiz Ponteiro para a raiz da árvore
- * @param valor Valor a ser removido
- * @return Ponteiro para a raiz atualizada da árvore
- */
-No* removerBST(No* raiz, const char* valor) {
-  if (raiz == NULL){
-    return NULL;
-  }
-
-  if (strcmp(valor, raiz->valor) < 0) {
-    raiz->esquerda = removerBST(raiz->esquerda, valor);
-  } else if (strcmp(valor, raiz->valor) > 0) {
-    raiz->direita = removerBST(raiz->direita, valor);
-  } else {
-    if (raiz->esquerda == NULL && raiz->direita == NULL) {
-      // Caso 1: sem filhos
-      // free(raiz->valor);
-      free(raiz);
-      return NULL;
-
-      // Caso 2: um único filho
-    } else if (raiz->esquerda == NULL) {
-      No* temp = raiz->direita;
-      // free(raiz->valor);
-      free(raiz);
-      return temp;
-    } else if (raiz->direita == NULL) {
-      No* temp = raiz->esquerda;
-      // free(raiz->valor);
-      free(raiz);
-      return temp;
-
-      // Caso 3: dois filhos
-    } else {
-      No* sucessor = encontrarMinimoBST(raiz->direita);
-      free(raiz->valor);
-      // raiz->valor = strdup(sucessor->valor);
-      strcpy(raiz->valor, sucessor->valor);
-      raiz->direita = removerBST(raiz->direita, sucessor->valor);
-    }
-  }
-
-  return raiz;
-}
-
-/**
- * @brief Função auxiliar para encontrar o nó mínimo em uma subárvore
- * @param raiz Ponteiro para a raiz da subárvore
- * @return Ponteiro para o nó com o valor mínimo
- */
-No* encontrarMinimoBST(No* raiz) {
-    No* atual = raiz;
-    while (atual && atual->esquerda != NULL) {
-        atual = atual->esquerda;
-    }
-    return atual;
-}
-
-/**
- * @brief Função para exibir os valores da árvore em ordem (emOrdem)
- * @param arvorePistas Ponteiro para a raiz da árvore
- */
-void exibirPistas(No* arvorePistas) {
-  if (arvorePistas != NULL) {
-    exibirPistas(arvorePistas->esquerda);
-    printf("'%s' ", arvorePistas->valor);
-    exibirPistas(arvorePistas->direita);
-  }
-}
-
-/**
- * @brief Funções para percorrer a árvore em ordem
- * @note Na seguinte ordem: esquerda, raiz, direita
+ * @brief Função para exibir os valores da árvore em ordem (in-order traversal)
+ * @note Percorre na seguinte ordem: esquerda, raiz, direita
  * @param raiz Ponteiro para a raiz da árvore
  */
 void exibirEmOrdem(No* raiz) {

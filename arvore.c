@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "geral.h"
 #include "arvore.h"
 #include "bst.h"
@@ -208,7 +209,7 @@ void explorarSala(struct Sala* raiz, struct No* arvorePistas, const EntradaTabel
   // Mostra as pistas coletadas em ordem alfabética
   printf("\n=====================================\n");
   printf("Pistas coletadas em ordem alfabética:\n");
-  exibirPistas(arvorePistas);
+  exibirEmOrdem(arvorePistas);
   printf("\n=====================================\n");
 }
 
@@ -257,11 +258,11 @@ void liberarMemoria(struct Sala* raiz) {
 }
 
 /**
- * @brief Função para trocar dois elementos
+ * @brief Função auxiliar para trocar dois elementos (uso interno)
  * @param a Ponteiro para o primeiro elemento
  * @param b Ponteiro para o segundo elemento
  */
-void swap(int *a, int *b) {
+static void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;

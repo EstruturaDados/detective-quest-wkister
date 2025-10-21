@@ -24,17 +24,11 @@ typedef struct EntradaTabelaHash {
   int ocupado;            // 0 = vazio, 1 = ocupado, -1 = removido
 } EntradaTabelaHash;
 
-// Declaração da tabela hash
-extern EntradaTabelaHash tabelaSuspeitos[TAMANHO_TABELA];
-
 int funcao_hash(const char* chave);                                    // Função hash
 void inserirTabelaHash(const char* chave, const char* valor, EntradaTabelaHash* tabela_hash); // Insere pista -> suspeito
 struct valor* pegarValoresTabelaHash(const char* chave, const EntradaTabelaHash* tabela_hash); // Obtém valores associados a uma chave
-int buscarPistaTabelaHash(const char* pista, const EntradaTabelaHash* tabela_hash);     // Busca pista e retorna posição
-// char* obterSuspeito(const char* pista, const EntradaTabelaHash* tabela_hash); // Obtém suspeito pela pista
 void inicializarTabelaPistasSuspeitos(EntradaTabelaHash* tabela_hash);                 // Inicializa tabela com pistas
 void inicializarTabelaSalasPistas(EntradaTabelaHash* tabela_hash);            // Inicializa tabela com salas e pistas
-void exibirEstatisticas(const EntradaTabelaHash* tabela_hash);                // Exibe estatísticas de pistas
 
 
 #endif

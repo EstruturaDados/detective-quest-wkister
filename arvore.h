@@ -59,11 +59,8 @@ struct listaNo {
 Sala* criarSala(char* nome); // Cria uma nova sala na árvore
 Sala* inicializarArvoreSalas(); // Inicializa a árvore de salas do tabuleiro
 void explorarSala(struct Sala* raiz, struct No* arvorePistas, const struct EntradaTabelaHash* tabelaSalasPistas, const struct EntradaTabelaHash* tabelaPistasSuspeiros); // Permite a navegação do jogador pela árvore
-// void explorarSala(struct Sala* raiz); // Permite a navegação do jogador pela árvore
 void liberarMemoria(struct Sala* raiz); // Libera a memória alocada para a árvore
 int* fisherYatesIndices(int size); // Gera uma permutação aleatória de índices
-int* fisherYatesShuffle(const int original[], int size); // Embaralha um array usando o algoritmo Fisher-Yates
-void swap(int *a, int *b); // Troca dois elementos
 void exibirSuspeitos(); // Exibe a lista de suspeitos com suas profissões
 void escolherSuspeito(const struct No* arvorePistas, const struct EntradaTabelaHash* tabelaPistasSuspeiros); // Permite ao jogador escolher um suspeito
 struct listaNo* arvoreParaListaEncadeada(const struct No* raiz); // Converte uma árvore binária em uma lista encadeada

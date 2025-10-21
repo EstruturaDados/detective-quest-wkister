@@ -85,44 +85,6 @@ struct valor* pegarValoresTabelaHash(const char* chave, const EntradaTabelaHash*
 }
 
 /**
- * @brief Busca um valor na tabela hash
- * @param valor String com a pista a ser buscada.
- * @param tabela_hash Ponteiro para a tabela hash.
- * @return Índice da pista na tabela, ou -1 se não encontrado.
- */
-int buscarValorTabelaHash(const char* valor, const EntradaTabelaHash* tabela_hash) {
-  int indice = funcao_hash(valor);
-
-  for (int i = 0; i < TAMANHO_TABELA; i++) {
-    int pos = (indice + i) % TAMANHO_TABELA;
-
-    if (tabela_hash[pos].ocupado == 0) {
-      return -1; // Paramos: posição nunca foi usada
-    }
-
-    // if (tabela_hash[pos].ocupado == 1 && strcmp(tabela_hash[pos].pista, pista) == 0) {
-    //   return pos;
-    // }
-  }
-
-  return -1; // Não encontrou
-}
-
-/**
- * @brief Obtém o suspeito associado a uma pista.
- * @param pista String com a pista a ser buscada.
- * @param tabela_hash Ponteiro para a tabela hash.
- * @return Nome do suspeito ou NULL se não encontrado.
- */
-// char* obterSuspeito(const char* pista, const EntradaTabelaHash* tabela_hash) {
-  // int pos = buscarPistaTabelaHash(pista, tabela_hash);
-  // if (pos != -1) {
-  //   return (char*)tabela_hash[pos].suspeito;
-  // }
-//   return NULL;
-// }
-
-/**
  * @brief Inicializa a tabela hash com todas as pistas mapeadas para suspeitos.
  * @return Ponteiro para a tabela hash inicializada.
  * @param tabela_hash Ponteiro para a tabela hash a ser inicializada.
