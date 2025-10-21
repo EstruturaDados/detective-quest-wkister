@@ -19,10 +19,6 @@ TARGETS = $(patsubst $(SRCDIR)/%.c,$(BINDIR)/%,$(SOURCES:./%=%))
 # MENU_SRC = menu.c
 # MENU_OBJ = $(OBJDIR)/menu.o
 
-# Adicione o caminho para geral.c
-GERAL_SRC = geral.c
-GERAL_OBJ = $(OBJDIR)/geral.o
-
 # Adicione o caminho para arvore.c
 ARVORE_SRC = arvore.c
 ARVORE_OBJ = $(OBJDIR)/arvore.o
@@ -57,22 +53,13 @@ ifeq ($(HAS_MAIN),0)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
 else
 	@echo "Compilando e linkando $(FILE_PATH) (possui main)"
-	$(MAKE) $(MENU_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ) $(TABELA_HASH_OBJ)
+	$(MAKE) $(ARVORE_OBJ) $(BST_OBJ) $(TABELA_HASH_OBJ)
 	$(CC) $(CFLAGS) -c $(FILE_PATH) -o $(FILE_OBJ)
-# 	$(CC) $(LDFLAGS) $(FILE_OBJ) $(MENU_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ) $(TABELA_HASH_OBJ) -o $(FILE_BIN)
-	$(CC) $(LDFLAGS) $(FILE_OBJ) $(GERAL_OBJ) $(ARVORE_OBJ) $(BST_OBJ) $(TABELA_HASH_OBJ) -o $(FILE_BIN)
+	$(CC) $(LDFLAGS) $(FILE_OBJ) $(ARVORE_OBJ) $(BST_OBJ) $(TABELA_HASH_OBJ) -o $(FILE_BIN)
 endif
 endif
 
-# Compila funcoes.c em obj/funcoes.o
-
-# $(MENU_OBJ): $(MENU_SRC)
-# 	@mkdir -p $(dir $@)
-# 	$(CC) $(CFLAGS) -c $< -o $@
-
-$(GERAL_OBJ): $(GERAL_SRC)
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+# Compila os módulos principais em obj/*.o
 
 $(ARVORE_OBJ): $(ARVORE_SRC)
 	@mkdir -p $(dir $@)

@@ -7,8 +7,7 @@
 #ifndef  TABELA_HASH_H
 #define  TABELA_HASH_H
 
-#include "geral.h"   // Para usar TAM_STRING
-#include "arvore.h"  // Para usar MAX_PISTAS
+#include "arvore.h"  // Para usar MAX_PISTAS e TAM_STRING
 
 // --- Constantes ---
 #define TAMANHO_TABELA 20  // Aumentado para acomodar mais pistas

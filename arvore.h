@@ -10,6 +10,9 @@
 #ifndef ARVORE_H
 #define ARVORE_H
 
+// --- Constantes ---
+#define TAM_STRING 50 // Tamanho máximo para strings
+
 #include "bst.h" // Inclusão do arquivo de árvore binária de busca
 
 // Forward declarations para evitar dependência circular

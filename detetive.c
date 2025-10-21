@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "geral.h" // Protótipos das funções e definições gerais
 #include "arvore.h" // Protótipos das funções e definições de árvores
 #include "bst.h" // Protótipos das funções e definições de árvores binárias de busca
 #include "tabela_hash.h" // Protótipos das funções e definições de tabela hash

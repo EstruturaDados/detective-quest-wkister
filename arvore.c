@@ -2,10 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "geral.h"
 #include "arvore.h"
 #include "bst.h"
 #include "tabela_hash.h"
+
+/**
+ * @brief Função auxiliar para limpar o buffer de entrada
+ */
+static void limparBufferEntrada(){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 // Vetor de pistas
 char tipoPistas[MAX_PISTAS][TAM_STRING] = {
