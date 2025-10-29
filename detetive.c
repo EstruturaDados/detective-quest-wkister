@@ -1,8 +1,24 @@
 /**
- * @file algoritmos_avancados.c
+ * @file detetive.c
  * @brief Desafio Detective Quest
  * @note Tema 4 - Árvores e Tabela Hash
  * @author Wellington Kister do Nascimento
+ *
+ * @section compilation Compilação
+ * Para compilar este projeto, você pode usar os seguintes comandos make:
+ *
+ * - make all       : Compila o projeto
+ * - make run      : Compila e executa o programa
+ * - make valgrind : Executa com verificação de vazamento de memória
+ * - make debug    : Compila com flags de depuração adicionais
+ * - make clean    : Remove arquivos compilados
+ *
+ * Exemplo de uso:
+ * @code
+ * $ make clean    # Limpa compilações anteriores
+ * $ make         # Compila o projeto
+ * $ make run     # Executa o programa
+ * @endcode
  */
 
 #include <stdio.h>
