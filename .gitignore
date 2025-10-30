@@ -1,4 +1,4 @@
-*.o
+# *.o  # Manter os objetos para avaliação
 *.exe
 *.out
 *.obj
